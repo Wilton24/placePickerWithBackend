@@ -1,10 +1,14 @@
 import fs from 'node:fs/promises';
-
+import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import express from 'express';
 
+dotenv.config();
+
+console.log(process.env.PORT);
+
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3000;
 app.use(express.static('images'));
 app.use(bodyParser.json());
 
