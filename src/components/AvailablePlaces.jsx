@@ -1,31 +1,41 @@
 import Places from './Places.jsx';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import ErrorPage from './ErrorPage.jsx';
 
-const places = localStorage.getItem('places');
+// const places = localStorage.getItem('places');
 
 export default function AvailablePlaces({ onSelectPlace }) {
   const [isFetching, setIsFetching] = useState(false);
   const [availablePlaces, setAvailablePlaces] = useState([]);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsFetching(true);
       try {
-        const response = await axios.get("http://localhost:3000/places");
+        const response = await axios.get("http://localhost:3000/placeswd");
         const data = response.data.places;
-        // localStorage.setItem('places', JSON.stringify(data));
-        setAvailablePlaces(data)
-        setIsFetching(false);
-      } catch (error) {
-        setIsFetching(false);
-        console.log('Error fetching places:', error);
-      }
-    };
-    fetchData();
+        // if (!response.ok) {
+        //   throw new Error('Failed to fetch places');
+        // }
+        if (response.request.statusText !== "OK") {
+          throw new Error('Failed to fetch places');
+        }
 
-    // setAvailablePlaces(JSON.parse(places));
+        setAvailablePlaces(data);
+      } catch (error) {
+        setError({ message: error.message || "An error occurred while fetching places" });
+      }
+      setIsFetching(false);
+    };
+
+    fetchData();
   }, []);
+
+  if (error) {
+    return <ErrorPage title="An Error occured" message={error.message} />
+  }
 
   return (
     <Places
