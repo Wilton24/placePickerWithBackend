@@ -1,24 +1,25 @@
 import Places from './Places.jsx';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
-
 
 const places = localStorage.getItem('places');
 
-const sendData = async () => {
+const fetchData = async () => {
   try {
     const response = await axios.get("http://localhost:3000/places");
     const data = response.data.places;
     localStorage.setItem('places', JSON.stringify(data));
-
   } catch (error) {
     console.log('Error fetching places:', error);
   }
 };
 
-sendData();
-
 export default function AvailablePlaces({ onSelectPlace }) {
+
+  useEffect(() => {
+    fetchData();
+    setAvailablePlaces(JSON.parse(places));
+  }, [])
 
   const [availablePlaces, setAvailablePlaces] = useState([]);
 
