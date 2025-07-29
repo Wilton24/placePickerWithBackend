@@ -10,6 +10,8 @@ export async function fetchPlaces() {
 };
 
 export async function updateUserPlaces(places) {
+
+    const lugar = { lugarismo: 'shaman', }
     try {
         const response = await axios.post("http://localhost:3000/user-places", places);
 

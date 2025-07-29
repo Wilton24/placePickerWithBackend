@@ -5,8 +5,6 @@ import express from 'express';
 
 dotenv.config();
 
-console.log(process.env.PORT);
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.static('images'));
