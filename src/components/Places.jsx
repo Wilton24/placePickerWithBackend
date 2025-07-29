@@ -1,5 +1,11 @@
+import { useEffect } from "react";
 
 export default function Places({ title, places, fallbackText, onSelectPlace, isLoading, loadingText }) {
+
+  useEffect(() => {
+    console.log("UseEffect runs");
+
+  }, [onSelectPlace])
 
   return (
     <section className="places-category">

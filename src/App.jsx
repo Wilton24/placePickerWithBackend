@@ -19,9 +19,10 @@ function App() {
 
   function handleStopRemovePlace() {
     setModalIsOpen(false);
-  }
+  };
 
-  function handleSelectPlace(selectedPlace) {
+
+  const handleSelectPlace = useCallback((selectedPlace) => {
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];
@@ -31,7 +32,8 @@ function App() {
       }
       return [selectedPlace, ...prevPickedPlaces];
     });
-  }
+  }, []);
+
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
     setUserPlaces((prevPickedPlaces) =>
