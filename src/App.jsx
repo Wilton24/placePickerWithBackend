@@ -30,11 +30,12 @@ function App() {
       if (prevPickedPlaces.some((place) => place.id === selectedPlace.id)) {
         return prevPickedPlaces;
       }
-      updateUserPlaces(selectedPlace);
       return [selectedPlace, ...prevPickedPlaces];
     });
 
+    updateUserPlaces(selectedPlace);
   }, []);
+
 
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
