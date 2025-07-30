@@ -1,14 +1,14 @@
-import { useRef, useState, useCallback } from 'react';
-
+import { useRef, useState, useCallback, useEffect } from 'react';
+import axios from 'axios';
 import Places from './components/Places.jsx';
 import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
+import { updateUserPlaces } from './fetchData.js';
 
 function App() {
   const selectedPlace = useRef();
-
   const [userPlaces, setUserPlaces] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -30,8 +30,10 @@ function App() {
       if (prevPickedPlaces.some((place) => place.id === selectedPlace.id)) {
         return prevPickedPlaces;
       }
+      updateUserPlaces(selectedPlace);
       return [selectedPlace, ...prevPickedPlaces];
     });
+
   }, []);
 
 
