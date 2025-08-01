@@ -1,16 +1,23 @@
 import { useRef, useState, useCallback, useEffect } from 'react';
-import axios from 'axios';
 import Places from './components/Places.jsx';
 import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
 import { updateUserPlaces } from './fetchData.js';
+import { use } from 'react';
 
 function App() {
   const selectedPlace = useRef();
   const [userPlaces, setUserPlaces] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  useEffect(() => {
+    const storedPlaces = localStorage.getItem("userPlaces");
+    if (storedPlaces) {
+      setUserPlaces(JSON.parse(storedPlaces));
+    }
+  }, []);
 
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
@@ -24,16 +31,22 @@ function App() {
 
   const handleSelectPlace = useCallback((selectedPlace) => {
     setUserPlaces((prevPickedPlaces) => {
-      if (!prevPickedPlaces) {
-        prevPickedPlaces = [];
-      }
-      if (prevPickedPlaces.some((place) => place.id === selectedPlace.id)) {
-        return prevPickedPlaces;
-      }
-      return [selectedPlace, ...prevPickedPlaces];
-    });
+      const updatedPlaces = prevPickedPlaces || [];
 
-    updateUserPlaces(selectedPlace);
+      if (updatedPlaces.some((place) => place.id === selectedPlace.id)) {
+        return updatedPlaces;
+      }
+
+      const newPlaces = [selectedPlace, ...updatedPlaces];
+
+      // ✅ Save to localStorage
+      localStorage.setItem("userPlaces", JSON.stringify(newPlaces));
+
+      // ✅ Send to backend
+      updateUserPlaces(newPlaces);
+
+      return newPlaces;
+    });
   }, []);
 
 
