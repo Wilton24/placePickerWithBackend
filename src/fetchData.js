@@ -12,19 +12,20 @@ export async function fetchPlaces() {
 export async function updateUserPlaces(places) {
     try {
         const response = await axios.put("http://localhost:3000/user-places", {
-            places: places
+            places,
         });
 
         if (response.status !== 200) {
-            throw new Error('Failed to update places');
+            throw new Error("Failed to update places");
         }
 
         return response.data;
     } catch (error) {
         console.error(error);
-        throw new Error('Something went wrong while updating the places');
+        throw new Error("Something went wrong while updating the places");
     }
 }
+
 
 // const place = {
 //     id: "p1",

@@ -5,7 +5,6 @@ import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
 import { updateUserPlaces } from './fetchData.js';
-import { use } from 'react';
 
 function App() {
   const selectedPlace = useRef();
@@ -22,6 +21,8 @@ function App() {
   function handleStartRemovePlace(place) {
     setModalIsOpen(true);
     selectedPlace.current = place;
+    // console.log(place);
+
   }
 
   function handleStopRemovePlace() {
@@ -51,13 +52,21 @@ function App() {
 
 
 
-  const handleRemovePlace = useCallback(async function handleRemovePlace() {
-    setUserPlaces((prevPickedPlaces) =>
-      prevPickedPlaces.filter((place) => place.id !== selectedPlace.current.id)
-    );
+  const handleRemovePlace = useCallback(function handleRemovePlace() {
+    setUserPlaces((prevPickedPlaces) => {
+      const updatedPlaces = prevPickedPlaces.filter(
+        (place) => place.id !== selectedPlace.current.id
+      );
+
+      // ✅ Save the updated list to localStorage
+      localStorage.setItem("userPlaces", JSON.stringify(updatedPlaces));
+
+      return updatedPlaces;
+    });
 
     setModalIsOpen(false);
   }, []);
+
 
   return (
     <>
