@@ -4,7 +4,7 @@ import Modal from './components/Modal.jsx';
 import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
-import { updateUserPlaces } from './fetchData.js';
+import { updateUserPlaces, deleteUserPlace } from './fetchData.js';
 
 function App() {
   const selectedPlace = useRef();
@@ -57,6 +57,8 @@ function App() {
       const updatedPlaces = prevPickedPlaces.filter(
         (place) => place.id !== selectedPlace.current.id
       );
+      // ✅ Update the backend
+      deleteUserPlace(selectedPlace.current.id);
 
       // ✅ Save the updated list to localStorage
       localStorage.setItem("userPlaces", JSON.stringify(updatedPlaces));

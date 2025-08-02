@@ -27,6 +27,21 @@ export async function updateUserPlaces(places) {
 }
 
 
+export async function deleteUserPlace(placeId) {
+    try {
+        const response = await axios.delete(`http://localhost:3000/user-places/${placeId}`);
+
+        if (response.status !== 200) {
+            throw new Error("Failed to delete place");
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error(error);
+        throw new Error("Something went wrong while deleting the place");
+    }
+}
+
 // const place = {
 //     id: "p1",
 //     title: "Forest Waterfall",

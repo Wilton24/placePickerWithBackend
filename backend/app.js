@@ -44,6 +44,18 @@ app.put('/user-places', async (req, res) => {
   res.status(200).json({ message: 'User places updated!' });
 });
 
+app.delete('/user-places/:id', async (req, res) => {
+  const placeId = req.params.id;
+  const fileContent = await fs.readFile('./data/user-places.json');
+  const places = JSON.parse(fileContent);
+  const updatedPlaces = places.filter((place) => place.id !== placeId);
+
+  await fs.writeFile('./data/user-places.json', JSON.stringify(updatedPlaces));
+
+  res.status(200).json({ message: 'User place deleted!' });
+});
+
+
 // 404
 app.use((req, res, next) => {
   if (req.method === 'OPTIONS') {
