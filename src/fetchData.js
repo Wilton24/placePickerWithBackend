@@ -42,17 +42,10 @@ export async function deleteUserPlace(placeId) {
     }
 }
 
-// const place = {
-//     id: "p1",
-//     title: "Forest Waterfall",
-//     image: {
-//         src: "forest-waterfall.jpg",
-//         alt: "A tranquil forest with a cascading waterfall amidst greenery."
-//     },
-//     lat: 44.5588,
-//     lon: -80.344
-// };
-
-// const response = await axios.put("http://localhost:3000/user-places", {
-//     places: [place]
-// });
+export async function fetchUserPlaces() {
+    const response = await axios.get(`http://localhost:3000/user-places`);
+    if (response.status !== 200) {
+        throw new Error("Failed to fetch user places");
+    }
+    return response.data.places;
+}
