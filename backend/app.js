@@ -11,15 +11,17 @@ app.use(express.static('images'));
 app.use(bodyParser.json());
 
 // CORS
-
+// Allow cross-origin requests for development purposes
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); // allow all domains
-  res.setHeader('Access-Control-Allow-Methods', 'GET, PUT');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   next();
 });
 
+
+// Get all places
 app.get('/places', async (req, res) => {
   const fileContent = await fs.readFile('./data/places.json');
 
@@ -28,6 +30,7 @@ app.get('/places', async (req, res) => {
   res.status(200).json({ places: placesData });
 });
 
+// Get user places
 app.get('/user-places', async (req, res) => {
   const fileContent = await fs.readFile('./data/user-places.json');
 
@@ -36,6 +39,7 @@ app.get('/user-places', async (req, res) => {
   res.status(200).json({ places });
 });
 
+// Update user places
 app.put('/user-places', async (req, res) => {
   const places = req.body.places;
 
@@ -44,6 +48,7 @@ app.put('/user-places', async (req, res) => {
   res.status(200).json({ message: 'User places updated!' });
 });
 
+// Delete a user place
 app.delete('/user-places/:id', async (req, res) => {
   const placeId = req.params.id;
   const fileContent = await fs.readFile('./data/user-places.json');
