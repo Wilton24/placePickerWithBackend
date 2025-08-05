@@ -24,8 +24,8 @@ function App() {
         setError({ message: error.message || "An error occurred while fetching user places" });
       };
     };
-    setIsFetching(false);
     loadUserPlaces();
+    setIsFetching(false);
 
   }, []);
 
